@@ -1,0 +1,21 @@
+{
+    "title": "Linked Image Swap",
+    "description": "Displays iamges which swap in response to clicking a  link",
+    "majorVersion": 1,
+    "minorVersion": 0,
+    "patchVersion": 0,
+    "runnable": 1,
+    "author": "theotherdy",
+    "license": "cc-by-sa",
+    "machineName": "H5P.LinkedImageSwap",
+    "coreApi": {
+      "majorVersion": 1,
+      "minorVersion": 0
+    },
+    "preloadedJs": [
+      { "path": "linked-image-swap.js" }
+    ],
+    "preloadedCss": [
+      {"path": "linked-image-swap.css"}
+    ]
+  }

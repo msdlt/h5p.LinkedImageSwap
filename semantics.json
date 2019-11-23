@@ -1,0 +1,40 @@
+[ 
+  {
+    "name": "defaultImage",
+    "type": "image",
+    "label": "Default image",
+    "importance": "high",
+    "description": "Default image shown when intercation opens"
+  },
+  {
+    "name": "linkedImages",
+    "type": "list",
+    "label": "Linked Images",
+    "entity": "linkedImage",
+    "max": 100,
+    "min": 1,
+    "field": {
+      "name": "content",
+      "type": "group",
+      "label": "Content",
+      "importance": "high",
+      "entity": "content",
+      "fields": [
+        {
+          "name": "linkText",
+          "type": "text",
+          "label": "Link text",
+          "importance": "high",
+          "description": "Text user clicks to see asssociated image"
+        },
+        {
+          "name": "linkedImage",
+          "type": "image",
+          "label": "Linked image",
+          "importance": "high",
+          "description": "Image shown when users click associated link text"
+        }
+      ]
+    }
+  }
+]

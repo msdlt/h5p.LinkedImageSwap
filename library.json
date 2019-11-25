@@ -17,5 +17,12 @@
     ],
     "preloadedCss": [
       {"path": "linked-image-swap.css"}
+    ],
+    "preloadedDependencies": [
+      {
+        "machineName": "FontAwesome",
+        "majorVersion": 4,
+        "minorVersion": 5
+      }
     ]
   }

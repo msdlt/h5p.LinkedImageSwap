@@ -38,7 +38,7 @@
           "name": "altText",
           "type": "text",
           "label": "Alt text",
-          "importance": "high",
+          "importance": "medium",
           "description": "Alternative text for image"
         },
         {

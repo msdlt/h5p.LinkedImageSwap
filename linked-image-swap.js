@@ -31,13 +31,15 @@ H5P.LinkedImageSwap = (function ($) {
     this.linkedImageAlts = [];
     this.linkButtons = [];
 
+    this.WIDTH_FONT_SIZE_RATIO = 43;
+    this.BUTTON_COLUMN_MAX_WIDTH = 235;
+
     // Lisetening for changes to size so can change layout when resized
     this.on('resize', function () {
-      this.checkAndAdjustLayout(43,235);  //specify width:font size ratio and max width of column for bttons in widescreen mode 
+      this.checkAndAdjustLayout(this.WIDTH_FONT_SIZE_RATIO,this.BUTTON_COLUMN_MAX_WIDTH);  //specify width:font size ratio and max width of column for bttons in widescreen mode 
     });
 
     this.currentImageId; //used to prevent actions when slected button is clicked again
-
   }
 
   LinkedImageSwap.prototype = Object.create(H5P.EventDispatcher.prototype);
@@ -119,6 +121,11 @@ H5P.LinkedImageSwap = (function ($) {
       }
     }  
     self.widestLink = self.getWidthOfWidestLink(); //only need to run this at start up
+    
+    //required to cope with some resizing that appears to happen after .attach()
+    setTimeout(function () {
+      self.checkAndAdjustLayout(self.WIDTH_FONT_SIZE_RATIO,self.BUTTON_COLUMN_MAX_WIDTH);  
+    }, 100);
   };
 
   /**
@@ -128,7 +135,7 @@ H5P.LinkedImageSwap = (function ($) {
    */
   LinkedImageSwap.prototype.createLinkButton = function (id, linkText) {
     var self = this;
-    var linkButtonId = 'h5p-linkedimageswap-link-button' + this.idPrefix + id;
+    var linkButtonId = 'h5p-linkedimageswap-link-button' + id;
     // Create list item radio button
     var $linkButton =  $('<li/>', {
         'id': linkButtonId,
@@ -219,7 +226,12 @@ H5P.LinkedImageSwap = (function ($) {
       self.$linkList.addClass('h5p-linkedimageswap-options-widescreen');
       self.$linkList.css({'width': self.widestLink});
       //new width
-      var newWidth = parseFloat(self.$wrapper.css('width')) - self.widestLink;
+      var newWidth = parseFloat(self.$wrapper.css("width")) - self.widestLink;
+      //If run straight after attach in Drupal - following values generated:
+      //console.log(self.$wrapper.width()); //1838
+      //console.log(self.widestLink); //217.031
+      //console.log(newWidth); //1620.96
+      //BUT self.$wrapper.width() actually 1821 so doesn't fit!! So have added timeout to end of .attach()
       self.$imageContainer.css({'width': newWidth});
       self.$imageContainer.css({'float': 'right'});
     }

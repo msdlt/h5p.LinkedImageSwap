@@ -5,6 +5,7 @@
     "minorVersion": 0,
     "patchVersion": 0,
     "runnable": 1,
+    "fullscreen": 1,
     "author": "theotherdy",
     "license": "cc-by-sa",
     "machineName": "H5P.LinkedImageSwap",

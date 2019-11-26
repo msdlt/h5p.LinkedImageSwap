@@ -1,13 +1,11 @@
 .h5p-linkedimageswap-container {
     text-align: center;
+    background-color: white;
 }
 .h5p-linkedimageswap {
     width: 100%;
     height: auto;
     margin: 0 auto;
-    /*float: right;*/
-    /*border: 1px solid #ccc;
-    box-shadow: 2px 2px 4px #ccc;*/
 }
 .h5p-linkedimageswap-image {
     max-width:100%;
@@ -15,15 +13,21 @@
 }
 .h5p-linkedimageswap-options {
     list-style-type: none;
+    margin: 0 0 !important;
+    padding: 0;
+}
+
+.h5p-linkedimageswap-options-container {
+    list-style-type: none;
     margin: 1em 0;
     padding: 0;
-    /*overflow: visible;*/
+    float: left;
 }
 
 .h5p-linkedimageswap-options li {
     list-style: none;
     background-color: #ddd;
-    margin: 0.2em;
+    margin: 0 0 0.4em 0.3em;
     display: inline-block;
     position: relative;
     cursor: pointer;
@@ -44,7 +48,6 @@
 }
 
 .h5p-linkedimageswap-options-widescreen {
-    /*float: left;*/
     margin: 0 0 !important;
 }
 

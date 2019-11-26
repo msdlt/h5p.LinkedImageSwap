@@ -7,6 +7,13 @@
     "description": "Default image shown when intercation opens"
   },
   {
+    "name": "defaultAltText",
+    "type": "text",
+    "label": "Alt text",
+    "importance": "high",
+    "description": "Alternative text for image"
+  },
+  {
     "name": "linkedImages",
     "type": "list",
     "label": "Linked Images",
@@ -26,6 +33,13 @@
           "label": "Link text",
           "importance": "high",
           "description": "Text user clicks to see asssociated image"
+        },
+        {
+          "name": "altText",
+          "type": "text",
+          "label": "Alt text",
+          "importance": "high",
+          "description": "Alternative text for image"
         },
         {
           "name": "linkedImage",

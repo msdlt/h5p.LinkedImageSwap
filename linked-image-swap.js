@@ -1,13 +1,10 @@
-//var H5P = H5P || {};
-
 /**
- * @todo: add input for and display alt text
- * @todo: responsively place labels at left/right if enough room: https://h5p.org/documentation/for-developers/responsive-design
- * 
+ * @todo: cope with no default image input?
  */
 
 /**
  * LinkedImageSwap module
+ * Buttons show associate images
  *
  * @param {jQuery} $
  */
@@ -21,24 +18,23 @@ H5P.LinkedImageSwap = (function ($) {
   function LinkedImageSwap(params, contentId) { //}, contentData) {
     // Keep provided id.
     this.contentId = contentId;
-    //H5P.EventDispatcher.call(this);
-
+    
     // Extend defaults with provided options
     this.params = $.extend({}, {
-      defaultImage: '', // @todo don't really want to give this a default value??
+      defaultImage: '', 
       linkedImages: []
     }, params);
 
-    this.linkedImages = [];
+    this.linkedImagePaths = [];
+    this.linkedImageAlts = [];
     this.linkButtons = [];
 
     // Lisetening for changes to size so can change layout when resized
     this.on('resize', function () {
-      // Give some constraints for when changes should happen to NewContent
-      this.checkAndAdjustLayout(43,235);
+      this.checkAndAdjustLayout(43,235);  //specify width:font size ratio and max width of column for bttons in widescreen mode 
     });
 
-    this.currentImageId;
+    this.currentImageId; //used to prevent actions when slected button is clicked again
 
   };
 
@@ -56,7 +52,7 @@ H5P.LinkedImageSwap = (function ($) {
     // Set class on container to identify it as a linked image swap container.  Allows for styling later.
     $container.addClass("h5p-linkedimageswap-container");
 
-    //creating wrapper on  whcih to listen for resize events after: https://h5p.org/documentation/for-developers/responsive-design
+    //creating wrapper on which to listen for resize events after: https://h5p.org/documentation/for-developers/responsive-design
     if (self.$wrapper === undefined) {
       // Create our wrapper on first attach.
       self.$wrapper = $('<div/>');
@@ -65,47 +61,60 @@ H5P.LinkedImageSwap = (function ($) {
     // Attach wrapper to container.
     $container.html('').append(self.$wrapper);
 
-    self.$imageElement = $('<img>',{
-      class: 'h5p-linkedimageswap-image',
-      src: H5P.getPath(self.params.defaultImage.path, self.contentId),
-      id: 'linkedImage',
-      name: 'linkedImage'
-    });
-
-    //start by adding div and image
-    self.$imageContainer = $('<div>')
-      .addClass('h5p-linkedimageswap')
-      .append(self.$imageElement);
-      //.append('<img class="h5p-linkedimageswap-image" src="' + H5P.getPath(self.params.defaultImage.path, self.contentId) + '" id="linkedImage" name="linkedImage">');
-      //.append('<img class="h5p-linkedimageswap-image" src="' + self.params.defaultImage.path + '" id="linkedImage" name="linkedImage">');
-    self.$wrapper.append(self.$imageContainer);
-    
     //then add list
     self.$linkListContainer = $('<div>',{
       class: 'h5p-linkedimageswap-options-container',
     });
-
     self.$wrapper.append(self.$linkListContainer);
-    
-    //then add list
     self.$linkList = $('<ul>',{
       class: 'h5p-linkedimageswap-options',
       role: 'radiogroup'
     });
-    //self.$wrapper.append('<ul class="h5p-linkedimageswap-options h5p-linkedimageswap-options-widescreen" role="radiogroup"></ul>');
     self.$linkListContainer.append(self.$linkList);
 
-    //now create buttons and images
-    self.linkedImages[0] = H5P.getPath(self.params.defaultImage.path, self.contentId);
+    //now add image container and default image
+    self.linkedImagePaths[0] = H5P.getPath(self.params.defaultImage.path, self.contentId);
+    if(typeof self.params.defaultAltText !== 'undefined') {
+      self.linkedImageAlts[0] = self.params.defaultAltText;
+    } else {
+      self.linkedImageAlts[0] = '';
+    }
+    
+    //create img and populate with default image
+    self.$imageElement = $('<img>',{
+      class: 'h5p-linkedimageswap-image',
+      src: self.linkedImagePaths[0],
+      id: 'linkedImage',
+      name: 'linkedImage',
+      alt: self.linkedImageAlts[0],
+      tabindex: '0'
+    });
+
+    //adding containing div and image
+    self.$imageContainer = $('<div>')
+      .addClass('h5p-linkedimageswap')
+      .append(self.$imageElement);
+    self.$wrapper.append(self.$imageContainer);
+
+    //create default button
     self.createLinkButton(0, 'Default');
     self.linkButtons[0].focus();
     
+    //read aparms into arrays, omitting those where either the linkText or linkedImage are missing
+    var createdButtonsCounter = 1; //to cope with images/buttons potentially not being added below
     for (var i = 0; i < self.params.linkedImages.length; i++) {
-      self.linkedImages[i+1] = H5P.getPath(self.params.linkedImages[i].linkedImage.path, self.contentId);
-      self.createLinkButton(i+1, self.params.linkedImages[i].linkText);
+      if(self.params.linkedImages[i].linkedImage !== 'undefined' && self.params.linkedImages[i].linkedImage) {
+        self.linkedImagePaths[createdButtonsCounter] = H5P.getPath(self.params.linkedImages[i].linkedImage.path, self.contentId);
+        if(typeof self.params.linkedImages[i].altText !== 'undefined') {
+          self.linkedImageAlts[createdButtonsCounter] = self.params.linkedImages[i].altText;
+        } else {
+          self.linkedImageAlts[createdButtonsCounter] = '';
+        }
+        self.createLinkButton(createdButtonsCounter, self.params.linkedImages[i].linkText);
+        createdButtonsCounter++;
+      }
     }  
-
-    self.widestLink = self.getWidthOfWidestLink();
+    self.widestLink = self.getWidthOfWidestLink(); //only need to run this at start up
   };
 
   /**
@@ -119,7 +128,6 @@ H5P.LinkedImageSwap = (function ($) {
     // Create list item radio button
     var $linkButton =  $('<li/>', {
         'id': linkButtonId,
-        //'class': 'h5p-panel-title',
         'role': 'radio',
         'tabindex': (id === 0 ? '0':'-1'),
         'aria-selected': (id === 0 ? 'true' : 'false'),
@@ -137,13 +145,13 @@ H5P.LinkedImageSwap = (function ($) {
             if(id > 0) {
               self.swapImage(id - 1);
             } else {
-              self.swapImage(self.linkedImages.length-1);
+              self.swapImage(self.linkedImagePaths.length-1);
             }
             return false;
           }
           case 40:   // Down
           case 39: { // Right
-            if(id < self.linkedImages.length - 1) {
+            if(id < self.linkedImagePaths.length - 1) {
               self.swapImage(id + 1);
             } else {
               self.swapImage(0);
@@ -167,9 +175,9 @@ H5P.LinkedImageSwap = (function ($) {
    */
   LinkedImageSwap.prototype.swapImage = function(id) {
     var self = this;
-    console.log(id);
-    if(id !== self.currentImageId) {
-      $('#linkedImage').attr('src', self.linkedImages[id]);
+    if(id !== self.currentImageId) {  //ie don't do anything unless changed
+      $('#linkedImage').attr('src', self.linkedImagePaths[id]);
+      $('#linkedImage').attr('alt', self.linkedImageAlts[id]);
       self.currentImageId = id;
       self.doSelecting(id);
     }
@@ -204,35 +212,20 @@ H5P.LinkedImageSwap = (function ($) {
     var self = this;
     //Find ratio of width to em, and make sure it is less than the predefined ratio.
     if ((self.widestLink && self.$wrapper.width() / parseFloat($("body").css("font-size")) > widthFontSizeRatio) && (self.widestLink < maxButtonColumnWidth)) {
-      // Adds a class that floats the draggables to the right.
       self.$linkList.addClass('h5p-linkedimageswap-options-widescreen');
-      // Detach and reappend the wordContainer so it will fill up the remaining space left by draggables.
-      //self.$linkList.detach().appendTo(self.$imageContainer);
       self.$linkList.css({'width': self.widestLink});
-      //self.$imageContainer.detach().appendTo(self.$taskContainer);
-      // Set margin so the wordContainer does not expand when there are no more draggables left.
       //new width
       var newWidth = parseFloat(self.$wrapper.css('width')) - self.widestLink;
-      console.log(newWidth);
       self.$imageContainer.css({'width': newWidth});
       self.$imageContainer.css({'float': 'right'});
-      // Set all draggables to be blocks
-      //self.draggablesArray.forEach(function (draggable) {
-      //draggable.getDraggableElement().addClass('h5p-drag-draggable-wide-screen');
-      //});
     }
     else {
       // Remove the specific wide screen settings.
       self.$imageElement.css({'margin-left': 0});
       self.$linkList.removeClass('h5p-linkedimageswap-options-widescreen');
-      //self.$draggables.detach().appendTo(self.$taskContainer);
-      //self.$linkList.detach().appendTo(self.$wrapper);
       self.$linkList.css({'width': 'auto'});
       self.$imageContainer.css({'width': 'auto'});
       self.$imageContainer.css({'float': 'none'});
-      //self.draggablesArray.forEach(function (draggable) {
-      //  draggable.getDraggableElement().removeClass('h5p-drag-draggable-wide-screen');
-      //});
     }  
   }
 
@@ -255,7 +248,7 @@ H5P.LinkedImageSwap = (function ($) {
     totalWidth = totalWidth + 1 * fontSizeinPixels; 
     //lh & rh padding on li = 1.8
     totalWidth = totalWidth + 1.8 * fontSizeinPixels;
-    //lh & rh margin on li = 0.4
+    //lh & rh margin on li = 0.3
     totalWidth = totalWidth + 0.4 * fontSizeinPixels;
 
     return totalWidth;

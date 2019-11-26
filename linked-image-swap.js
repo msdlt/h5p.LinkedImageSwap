@@ -2,6 +2,8 @@
  * @todo: cope with no default image input?
  */
 
+var H5P = H5P || {};
+
 /**
  * LinkedImageSwap module
  * Buttons show associate images
@@ -36,7 +38,7 @@ H5P.LinkedImageSwap = (function ($) {
 
     this.currentImageId; //used to prevent actions when slected button is clicked again
 
-  };
+  }
 
   LinkedImageSwap.prototype = Object.create(H5P.EventDispatcher.prototype);
   LinkedImageSwap.prototype.constructor = LinkedImageSwap;
@@ -76,7 +78,8 @@ H5P.LinkedImageSwap = (function ($) {
     self.linkedImagePaths[0] = H5P.getPath(self.params.defaultImage.path, self.contentId);
     if(typeof self.params.defaultAltText !== 'undefined') {
       self.linkedImageAlts[0] = self.params.defaultAltText;
-    } else {
+    } 
+    else {
       self.linkedImageAlts[0] = '';
     }
     
@@ -107,7 +110,8 @@ H5P.LinkedImageSwap = (function ($) {
         self.linkedImagePaths[createdButtonsCounter] = H5P.getPath(self.params.linkedImages[i].linkedImage.path, self.contentId);
         if(typeof self.params.linkedImages[i].altText !== 'undefined') {
           self.linkedImageAlts[createdButtonsCounter] = self.params.linkedImages[i].altText;
-        } else {
+        } 
+        else {
           self.linkedImageAlts[createdButtonsCounter] = '';
         }
         self.createLinkButton(createdButtonsCounter, self.params.linkedImages[i].linkText);
@@ -131,7 +135,6 @@ H5P.LinkedImageSwap = (function ($) {
         'role': 'radio',
         'tabindex': (id === 0 ? '0':'-1'),
         'aria-selected': (id === 0 ? 'true' : 'false'),
-        'aria-checked': (id === 0 ? 'true' : 'false'),
         'html': '<div class="outer-circle"><div class="inner-circle"></div></div><p>' + linkText + '</p>',
       });
       //now let's add some event handlers to our button
@@ -144,7 +147,8 @@ H5P.LinkedImageSwap = (function ($) {
           case 37: { // Left
             if(id > 0) {
               self.swapImage(id - 1);
-            } else {
+            } 
+            else {
               self.swapImage(self.linkedImagePaths.length-1);
             }
             return false;
@@ -153,7 +157,8 @@ H5P.LinkedImageSwap = (function ($) {
           case 39: { // Right
             if(id < self.linkedImagePaths.length - 1) {
               self.swapImage(id + 1);
-            } else {
+            } 
+            else {
               self.swapImage(0);
             }
             return false;
@@ -191,11 +196,10 @@ H5P.LinkedImageSwap = (function ($) {
     var self = this;
     for (var i = 0; i < self.linkButtons.length; i++) {
       if (i !== id) {
-        self.linkButtons[i].attr('aria-checked', false); 
         self.linkButtons[i].attr('aria-selected', false);  
         self.linkButtons[i].attr('tabindex', -1);
-      } else {
-        self.linkButtons[i].attr('aria-checked', true);
+      } 
+      else {
         self.linkButtons[i].attr('aria-selected', true);  
         self.linkButtons[i].attr('tabindex', 0);  
         self.linkButtons[i].focus(); 
@@ -230,7 +234,7 @@ H5P.LinkedImageSwap = (function ($) {
   }
 
   /**
-   * Get width of widest link text - run once as won't change during lifetime
+   * Get width of widest link text
    */
   LinkedImageSwap.prototype.getWidthOfWidestLink = function() {
     var self = this;

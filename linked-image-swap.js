@@ -54,7 +54,7 @@ H5P.LinkedImageSwap = (function ($) {
   LinkedImageSwap.prototype.attach = function ($container) {
     var self = this;
     // Set class on container to identify it as a linked image swap container.  Allows for styling later.
-    $container.addClass("h5p-linkedimageswap-container");
+    $container.addClass('h5p-linkedimageswap-container');
 
     //creating wrapper on which to listen for resize events after: https://h5p.org/documentation/for-developers/responsive-design
     if (self.$wrapper === undefined) {
@@ -222,11 +222,11 @@ H5P.LinkedImageSwap = (function ($) {
   LinkedImageSwap.prototype.checkAndAdjustLayout = function(widthFontSizeRatio, maxButtonColumnWidth) {
     var self = this;
     //Find ratio of width to em, and make sure it is less than the predefined ratio.
-    if ((self.widestLink && self.$wrapper.width() / parseFloat($("body").css("font-size")) > widthFontSizeRatio) && (self.widestLink < maxButtonColumnWidth)) {
+    if ((self.widestLink && self.$wrapper.width() / parseFloat($('body').css('font-size')) > widthFontSizeRatio) && (self.widestLink < maxButtonColumnWidth)) {
       self.$linkList.addClass('h5p-linkedimageswap-options-widescreen');
       self.$linkList.css({'width': self.widestLink});
       //new width
-      var newWidth = parseFloat(self.$wrapper.css("width")) - self.widestLink;
+      var newWidth = parseFloat(self.$wrapper.css('width')) - self.widestLink;
       //If run straight after attach in Drupal - following values generated:
       //console.log(self.$wrapper.width()); //1838
       //console.log(self.widestLink); //217.031

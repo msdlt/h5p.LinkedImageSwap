@@ -78,13 +78,8 @@ H5P.LinkedImageSwap = (function ($) {
 
     //now add image container and default image
     self.linkedImagePaths[0] = H5P.getPath(self.params.defaultImage.path, self.contentId);
-    if(typeof self.params.defaultAltText !== 'undefined') {
-      self.linkedImageAlts[0] = self.params.defaultAltText;
-    } 
-    else {
-      self.linkedImageAlts[0] = '';
-    }
-    
+    self.linkedImageAlts[0] = self.params.defaultAltText || '';
+        
     //create img and populate with default image
     self.$imageElement = $('<img>',{
       class: 'h5p-linkedimageswap-image',
@@ -110,12 +105,7 @@ H5P.LinkedImageSwap = (function ($) {
     for (var i = 0; i < self.params.linkedImages.length; i++) {
       if(self.params.linkedImages[i].linkedImage !== 'undefined' && self.params.linkedImages[i].linkedImage) {
         self.linkedImagePaths[createdButtonsCounter] = H5P.getPath(self.params.linkedImages[i].linkedImage.path, self.contentId);
-        if(typeof self.params.linkedImages[i].altText !== 'undefined') {
-          self.linkedImageAlts[createdButtonsCounter] = self.params.linkedImages[i].altText;
-        } 
-        else {
-          self.linkedImageAlts[createdButtonsCounter] = '';
-        }
+        self.linkedImageAlts[createdButtonsCounter] = self.params.linkedImages[i].altText || '';
         self.createLinkButton(createdButtonsCounter, self.params.linkedImages[i].linkText);
         createdButtonsCounter++;
       }

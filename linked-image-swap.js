@@ -84,8 +84,6 @@ H5P.LinkedImageSwap = (function ($) {
     self.$imageElement = $('<img>',{
       class: 'h5p-linkedimageswap-image',
       src: self.linkedImagePaths[0],
-      id: 'linkedImage',
-      name: 'linkedImage',
       alt: self.linkedImageAlts[0],
       tabindex: '0'
     });
@@ -128,7 +126,6 @@ H5P.LinkedImageSwap = (function ($) {
     var linkButtonId = 'h5p-linkedimageswap-link-button' + id;
     // Create list item radio button
     var $linkButton =  $('<li/>', {
-        'id': linkButtonId,
         'role': 'radio',
         'tabindex': (id === 0 ? '0':'-1'),
         'aria-selected': (id === 0 ? 'true' : 'false'),

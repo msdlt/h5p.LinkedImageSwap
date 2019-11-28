@@ -178,8 +178,8 @@ H5P.LinkedImageSwap = (function ($) {
   LinkedImageSwap.prototype.swapImage = function(id) {
     var self = this;
     if(id !== self.currentImageId) {  //ie don't do anything unless changed
-      $('#linkedImage').attr('src', self.linkedImagePaths[id]);
-      $('#linkedImage').attr('alt', self.linkedImageAlts[id]);
+      self.$imageElement.attr('src', self.linkedImagePaths[id]);
+      self.$imageElement.attr('alt', self.linkedImageAlts[id]);
       self.currentImageId = id;
       self.doSelecting(id);
     }

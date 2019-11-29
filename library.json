@@ -7,7 +7,7 @@
     "runnable": 1,
     "fullscreen": 1,
     "author": "theotherdy",
-    "license": "cc-by-sa",
+    "license": "MIT",
     "machineName": "H5P.LinkedImageSwap",
     "coreApi": {
       "majorVersion": 1,

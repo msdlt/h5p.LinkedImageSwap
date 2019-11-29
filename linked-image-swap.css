@@ -11,17 +11,18 @@
     max-width:100%;
     height: auto;
 }
-.h5p-linkedimageswap-options {
-    list-style-type: none;
-    margin: 0 0 !important;
-    padding: 0;
-}
 
 .h5p-linkedimageswap-options-container {
     list-style-type: none;
     margin: 1em 0;
     padding: 0;
     float: left;
+}
+
+div.h5p-linkedimageswap-options-container ul {
+    margin: 0;
+    list-style-type: none;
+    padding: 0;
 }
 
 .h5p-linkedimageswap-options li {
@@ -45,10 +46,6 @@
 
 .h5p-linkedimageswap-options-widescreen li {
     display: block;
-}
-
-.h5p-linkedimageswap-options-widescreen {
-    margin: 0 0 !important;
 }
 
 .h5p-linkedimageswap-options li p {

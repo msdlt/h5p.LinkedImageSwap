@@ -1,0 +1,23 @@
+{
+  "name": "h5p.linkedimageswap",
+  "version": "1.0.0",
+  "description": "",
+  "main": "linked-image-swap.js",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^6.7.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msdlt/h5p.LinkedImageSwap.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/msdlt/h5p.LinkedImageSwap/issues"
+  },
+  "homepage": "https://github.com/msdlt/h5p.LinkedImageSwap#readme"
+}

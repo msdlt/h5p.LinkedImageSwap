@@ -32,11 +32,11 @@ H5P.LinkedImageSwap = (function ($) {
     this.linkButtons = [];
 
     this.WIDTH_FONT_SIZE_RATIO = 43;
-    this.BUTTON_COLUMN_MAX_WIDTH = 235;
+    //this.BUTTON_COLUMN_MAX_WIDTH = 235; 
 
     // Lisetening for changes to size so can change layout when resized
     this.on('resize', function () {
-      this.checkAndAdjustLayout(this.WIDTH_FONT_SIZE_RATIO,this.BUTTON_COLUMN_MAX_WIDTH);  //specify width:font size ratio and max width of column for bttons in widescreen mode 
+      this.checkAndAdjustLayout(this.WIDTH_FONT_SIZE_RATIO); //,this.BUTTON_COLUMN_MAX_WIDTH);  //specify width:font size ratio and max width of column for bttons in widescreen mode 
     });
 
     this.currentImageId; //used to prevent actions when slected button is clicked again
@@ -59,7 +59,9 @@ H5P.LinkedImageSwap = (function ($) {
     //creating wrapper on which to listen for resize events after: https://h5p.org/documentation/for-developers/responsive-design
     if (self.$wrapper === undefined) {
       // Create our wrapper on first attach.
-      self.$wrapper = $('<div/>');
+      self.$wrapper = $('<div>',{
+        class: 'h5p-linkedimageswap-wrapper',
+      });
     }
 
     // Attach wrapper to container.
@@ -206,29 +208,29 @@ H5P.LinkedImageSwap = (function ($) {
    * @param {number} widthFontSizeRatio
    * @param {number} maxButtonColumnWidth
    */
-  LinkedImageSwap.prototype.checkAndAdjustLayout = function(widthFontSizeRatio, maxButtonColumnWidth) {
+  LinkedImageSwap.prototype.checkAndAdjustLayout = function(widthFontSizeRatio) { //maxButtonColumnWidth) {
     var self = this;
     //Find ratio of width to em, and make sure it is less than the predefined ratio.
-    if ((self.widestLink && self.$wrapper.width() / parseFloat($('body').css('font-size')) > widthFontSizeRatio) && (self.widestLink < maxButtonColumnWidth)) {
+    if ((self.$wrapper.width() / parseFloat($('body').css('font-size')) > widthFontSizeRatio)) { // && (self.widestLink < maxButtonColumnWidth)) {
       self.$linkList.addClass('h5p-linkedimageswap-options-widescreen');
-      self.$linkList.css({'width': self.widestLink});
+      /*self.$linkList.css({'width': self.widestLink});
       //new width
-      var newWidth = parseFloat(self.$wrapper.css('width')) - self.widestLink;
+      var newWidth = parseFloat(self.$wrapper.css('width')) - self.widestLink;*/
       //If run straight after attach in Drupal - following values generated:
       //console.log(self.$wrapper.width()); //1838
       //console.log(self.widestLink); //217.031
       //console.log(newWidth); //1620.96
       //BUT self.$wrapper.width() actually 1821 so doesn't fit!! So have added timeout to end of .attach()
-      self.$imageContainer.css({'width': newWidth});
-      self.$imageContainer.css({'float': 'right'});
+      /*self.$imageContainer.css({'width': newWidth});
+      self.$imageContainer.css({'float': 'right'});*/
     }
     else {
       // Remove the specific wide screen settings.
-      self.$imageElement.css({'margin-left': 0});
+      /*self.$imageElement.css({'margin-left': 0});*/
       self.$linkList.removeClass('h5p-linkedimageswap-options-widescreen');
-      self.$linkList.css({'width': 'auto'});
+      /*self.$linkList.css({'width': 'auto'});
       self.$imageContainer.css({'width': 'auto'});
-      self.$imageContainer.css({'float': 'none'});
+      self.$imageContainer.css({'float': 'none'});*/
     }  
   }
 
